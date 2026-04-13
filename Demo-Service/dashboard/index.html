@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHC — Self-Healing Cluster Dashboard</title>
+  <meta name="description" content="Real-time Self-Healing Cluster monitoring dashboard with ML anomaly detection." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-brand">
+    <span class="brand-icon">⬡</span>
+    <span class="brand-name">SHC</span>
+    <span class="brand-sub">Self-Healing Cluster</span>
+  </div>
+
+  <div id="cluster-status" class="status-badge NORMAL">
+    <span class="pulse-dot"></span>
+    <span id="status-text">NORMAL</span>
+  </div>
+
+  <div class="header-right">
+    <span id="scenario-label"></span>
+    <span id="live-clock" class="clock">--:--:--</span>
+    <span style="display:flex;align-items:center;font-size:.72rem;color:var(--muted)">
+      <span class="ws-dot" id="ws-dot"></span><span id="ws-label">connecting…</span>
+    </span>
+  </div>
+</header>
+
+<!-- ── Main Container ──────────────────────────────────────────────────────── -->
+<main class="container">
+
+  <!-- Node Map -->
+  <section>
+    <div class="card-title" style="padding-left:.2rem">Cluster Nodes</div>
+    <div class="node-grid" id="node-grid">
+      <!-- Nodes injected by JS -->
+    </div>
+  </section>
+
+  <!-- Metric Cards -->
+  <section>
+    <div class="card-title" style="padding-left:.2rem">Live Node Metrics</div>
+    <div class="metric-grid" id="metric-grid">
+      <!-- Cards injected by JS -->
+    </div>
+  </section>
+
+  <!-- Chart + Anomaly Status -->
+  <div class="chart-row">
+    <div class="card">
+      <div class="card-title">Rolling Metrics — Last 60 Samples</div>
+      <div class="chart-wrap"><canvas id="main-chart"></canvas></div>
+    </div>
+
+    <div class="card anomaly-panel">
+      <div class="card-title">Anomaly Detection</div>
+
+      <div class="anomaly-indicator NORMAL" id="anomaly-indicator">
+        <div class="anom-dot"></div>
+        <div class="anom-info">
+          <div class="anom-state" id="anom-state">NORMAL</div>
+          <div class="anom-desc"  id="anom-desc">All systems operational</div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-val" id="stat-heals">0</div>
+          <div class="stat-lbl">Heals</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="stat-anomalies">0</div>
+          <div class="stat-lbl">Anomalies</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="stat-uptime">0s</div>
+          <div class="stat-lbl">Uptime</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:auto">
+        <div class="card-title">ML Model Info</div>
+        <div style="font-size:.75rem;line-height:1.9;color:var(--muted)">
+          Algorithm: <span style="color:var(--cyan)">Isolation Forest</span><br>
+          Features: <span style="color:var(--text)">8</span><br>
+          Scenarios: <span style="color:var(--text)">CPU Spike · OOM · DiskIO · Network · CrashLoop</span><br>
+          Contamination: <span style="color:var(--amber)">10%</span><br>
+          Estimators: <span style="color:var(--text)">200</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Healing Log -->
+  <div class="card">
+    <div class="card-title">Healing Event Log</div>
+    <div class="log-wrap">
+      <table id="log-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Timestamp</th>
+            <th>Issue Detected</th>
+            <th>Key Metrics</th>
+            <th>Action Taken</th>
+          </tr>
+        </thead>
+        <tbody id="log-body">
+          <tr><td colspan="5" class="log-empty">No healing events yet — system is monitoring…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Demo Controls -->
+  <div class="card">
+    <div class="card-title">Demo Controls</div>
+    <div class="controls">
+      <p>Use these controls to trigger and observe the self-healing pipeline in real time.</p>
+      <button class="btn btn-danger" onclick="triggerStress()">⚡ Simulate Node Stress</button>
+      <button class="btn btn-reset"  onclick="resetSystem()">↺ Reset to Normal</button>
+      <a class="btn btn-info" href="/api/events" target="_blank">📋 Raw Event Log</a>
+      <a class="btn btn-info" href="/api/metrics" target="_blank">📊 Raw Metrics</a>
+    </div>
+  </div>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

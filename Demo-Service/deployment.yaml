@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selfheal-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: selfheal-app
+  template:
+    metadata:
+      labels:
+        app: selfheal-app
+    spec:
+      serviceAccountName: selfheal-sa
+      containers:
+        - name: selfheal-app
+          image: selfheal-app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: ML_SERVICE_URL
+              value: "http://ml-service:8000"
+            - name: CRASH_TOKEN
+              value: "shc-secret"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
