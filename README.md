@@ -415,6 +415,7 @@ docker build -t selfheal-app ./Demo-Service
 ---
 
 ## Author
+Swaroop Vyawahare
 
 Final Year Academic Project — Self-Healing Cluster (SHC)
 
