@@ -1,0 +1,49 @@
+Case 1 (Ideal Stable System) :
+{
+  "cpu_usage": 45,
+  "memory_usage": 55,
+  "request_rate": 120,
+  "latency": 110,
+  "pod_restarts": 0,
+  "disk_io": 80,
+  "network_errors": 0,
+  "error_rate": 0.02
+}
+
+
+Case 2 (Moderate Load, Still Normal) :
+{
+  "cpu_usage": 60,
+  "memory_usage": 65,
+  "request_rate": 150,
+  "latency": 130,
+  "pod_restarts": 0,
+  "disk_io": 95,
+  "network_errors": 1,
+  "error_rate": 0.03
+}
+
+
+Case 3 (Slightly Busy but Healthy) : 
+{
+  "cpu_usage": 70,
+  "memory_usage": 75,
+  "request_rate": 180,
+  "latency": 160,
+  "pod_restarts": 1,
+  "disk_io": 100,
+  "network_errors": 1,
+  "error_rate": 0.05
+}
+
+Case 4 (ANOMALY) :
+{
+  "cpu_usage": 85,
+  "memory_usage": 75,
+  "request_rate": 200,
+  "latency": 220,
+  "pod_restarts": 1,
+  "disk_io": 90,
+  "network_errors": 3,
+  "error_rate": 0.8
+}
