@@ -417,6 +417,9 @@ docker build -t selfheal-app ./Demo-Service
 ## Author
 Swaroop Vyawahare
 
+## Contributor
+Shreyash Shirsat
+
 Final Year Academic Project — Self-Healing Cluster (SHC)
 
 > Built to demonstrate how ML-driven observability can automate Kubernetes node recovery without human intervention.
